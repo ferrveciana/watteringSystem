@@ -1,7 +1,3 @@
-
-tests/Arduino-master.zip
-tests/InputRead/InputRead.ino
-tests/pubsubclient-master.zip
-tests/soilMoistureCalibrationAlgorithm/soilMoistureCalibrationAlgorithm.ino
+tests/**
 tests/WiFiClientESP32/WiFiClientESP32.ino
 ytvideoSchema.png
