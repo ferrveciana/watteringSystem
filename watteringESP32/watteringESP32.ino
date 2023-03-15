@@ -9,8 +9,10 @@ const char* ssid     = "ZIZU's Wifi";
 const char* password = "";
 
 //------- MQTT -------
-const char* mqttServer = "test.mosquitto.org";
+const char* mqttServer = "192.168.1.77";
 const int mqttPort = 1883;
+const char* mqttUsername = "brokerPi0";
+const char* mqttPassword = "brokerPi0";
 const char* topic = "ferran/wateringSystem/esp32";
 const char* infoTopic = "ferran/wateringSystem/info";
 const char* subscribeTopic = "ferran/wateringSystem/server";
@@ -37,6 +39,8 @@ bool activateMoistureSensor = false;
 bool isWatered = false;
 int moistureLowThreshold = 500;
 int moistureHighThreshold = 460;
+
+bool debug = true;
 
 /* ------------- Definicio Funcions -----------*/
 void obtenirLocalTime(bool imprimir_info);
@@ -84,7 +88,7 @@ void setup() {
 
 void mqttConnect(){
   Serial.println("Connecting to MQTT...");
-  if(client.connect("ESP32Client")) {
+  if(client.connect("ESP32Client", mqttUsername, mqttPassword)) {
     Serial.println("connected");
   }
   else{
@@ -127,6 +131,7 @@ void loop(){
       else if(command == "0"){
         Serial.println("turn off");
         digitalWrite(pump_pin, LOW);
+        sendData("PUMP IS OFF");
         obtenirLocalTime(true);
       }
       else{
@@ -270,4 +275,16 @@ void printAllConfig(){
   Serial.printf("  (1)Pump will be on for %d seconds\n", pumpRunTime);
   Serial.printf("  (2)Pump will turn on at %s:00 \n", turnOnTime);
   Serial.printf("  (3)(4)(5)Moisture sensor is %d, from %d to %d \n", activateMoistureSensor, moistureLowThreshold, moistureHighThreshold);
+  if(debug){
+    Serial.printf("is Watered: %d", isWatered);
+  }
+  /*char* toSend = "PumpOn, PumpAt, isWatered";
+  char buffer[20000];
+  char *bufptr = buffer;
+  bufptr += sprintf( bufptr, "  (1)Pump will be on for %d seconds\n", pumpRunTime);
+  bufptr += sprintf( bufptr, "  (2)Pump will turn on at %s:00 \n", turnOnTime);
+  bufptr += sprintf( bufptr, "  (1)Pump will be on for %d seconds\n", pumpRunTime);
+  bufptr += sprintf( bufptr, "  (3)(4)(5)Moisture sensor is %d, from %d to %d \n", activateMoistureSensor, moistureLowThreshold, moistureHighThreshold);
+  bufptr += sprintf( bufptr, " is Watered: %d \n", isWatered);
+  Serial.printf(bufptr);*/
 }
