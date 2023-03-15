@@ -6,7 +6,7 @@
 
 //------- WIFI -------
 const char* ssid     = "ZIZU's Wifi";
-const char* password = "606525491zizuneta!";
+const char* password = "";
 
 //------- MQTT -------
 const char* mqttServer = "test.mosquitto.org";
